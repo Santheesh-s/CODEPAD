@@ -1,11 +1,12 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require("socket.io");
-const { YSocketIO } = require("y-socket.io/dist/server");
-const cors = require('cors');
+import express from 'express';
+import { createServer } from 'http';
+import { Server } from "socket.io";
+import { YSocketIO } from "y-socket.io/dist/server/index.js";
+import cors from 'cors';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
 
 app.use(cors());
 
@@ -25,7 +26,7 @@ ysocketio.initialize();
 // In a real production app, we would use y-redis or save to DB on update
 // For this demo, we can just keep it in memory or add simple logging
 // To add Redis:
-// const { createClient } = require('redis');
+// import { createClient } from 'redis';
 // const client = createClient();
 // client.on('error', (err) => console.log('Redis Client Error', err));
 // await client.connect();
@@ -39,7 +40,6 @@ ysocketio.on('document-update', async (docName, update) => {
 
 // Create a simple API to generate room IDs
 app.get('/api/new-room', (req, res) => {
-    const { v4: uuidv4 } = require('uuid');
     res.json({ roomId: uuidv4() });
 });
 
