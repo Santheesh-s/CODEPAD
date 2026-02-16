@@ -1,7 +1,7 @@
 import express from 'express';
 import { createServer } from 'http';
 import { Server } from "socket.io";
-import { YSocketIO } from "y-socket.io/dist/server/index.js";
+import { YSocketIO } from "y-socket.io/dist/server";
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
