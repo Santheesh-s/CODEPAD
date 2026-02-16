@@ -32,7 +32,7 @@ export default function CodeEditor({ roomId, language }) {
     // y-socket.io client might need full URL if not consistent.
     // However, SocketIOProvider usually takes a url string.
     const provider = new SocketIOProvider(
-      'http://localhost:3001', // Server URL
+      window.location.origin, // Connect to the same origin
       roomId,
       doc,
       {
