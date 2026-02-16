@@ -4,11 +4,21 @@ import { Server } from "socket.io";
 import { YSocketIO } from "y-socket.io/dist/server/index.js";
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = createServer(app);
 
 app.use(cors());
+
+// Serve static files from the React app
+// Assuming 'dist' is in the project root, which is one level up from 'server'
+const distPath = path.join(__dirname, '../dist');
+app.use(express.static(distPath));
 
 // Initialize Socket.io
 const io = new Server(server, {
@@ -43,7 +53,13 @@ app.get('/api/new-room', (req, res) => {
     res.json({ roomId: uuidv4() });
 });
 
-const PORT = 3001;
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
+const PORT = process.env.PORT || 3001;
 
 server.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
