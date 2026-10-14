@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 @layer base {
 
   html,
@@ -7,10 +9,37 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    @apply bg-gray-900 text-white;
+    @apply bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-300;
   }
 
   #root {
     height: 100%;
+  }
+}
+
+/* CodeMirror: make it fill its container and behave well on touch devices. */
+.cm-mobile-editor .cm-editor {
+  height: 100%;
+}
+
+.cm-mobile-editor .cm-scroller {
+  /* Native momentum scrolling + let the browser handle touch gestures so
+     partial text selection and pinch-scroll work on mobile. */
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+}
+
+.cm-mobile-editor .cm-content {
+  /* Allow the OS text-selection handles to grab partial ranges. */
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Slightly larger tap targets / readable font on small screens. */
+@media (max-width: 640px) {
+  .cm-mobile-editor .cm-content,
+  .cm-mobile-editor .cm-gutters {
+    font-size: 15px;
   }
 }

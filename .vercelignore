@@ -1,0 +1,7 @@
+src
+public
+index.html
+vite.config.js
+postcss.config.js
+dist
+node_modules
